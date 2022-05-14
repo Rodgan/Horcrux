@@ -20,60 +20,6 @@ void Test(ICipher& cipher)
 	std::cout << plain << std::endl;
 }
 
-void handleErrors(void)
-{
-    ERR_print_errors_fp(stderr);
-    abort();
-}
-
-int encrypt(unsigned char *plaintext, int plaintext_len, unsigned char *key,
-            unsigned char *iv, unsigned char *ciphertext)
-{
-    EVP_CIPHER_CTX *ctx;
-
-    int len;
-
-    int ciphertext_len;
-
-    /* Create and initialise the context */
-    if(!(ctx = EVP_CIPHER_CTX_new()))
-        handleErrors();
-
-	Aes256 aes(CIPHER_MODE::CBC);
-	aes.GenerateRandomKey();
-
-    /*
-     * Initialise the encryption operation. IMPORTANT - ensure you use a key
-     * and IV size appropriate for your cipher
-     * In this example we are using 256 bit AES (i.e. a 256 bit key). The
-     * IV size for *most* modes is the same as the block size. For AES this
-     * is 128 bits
-     */
-    if(1 != EVP_EncryptInit_ex(ctx, aes.GetEvpCipher(), NULL, aes.GetKey(), aes.GetIV()))
-        handleErrors();
-
-    /*
-     * Provide the message to be encrypted, and obtain the encrypted output.
-     * EVP_EncryptUpdate can be called multiple times if necessary
-     */
-    if(1 != EVP_EncryptUpdate(ctx, ciphertext, &len, plaintext, plaintext_len))
-        handleErrors();
-    ciphertext_len = len;
-
-    /*
-     * Finalise the encryption. Further ciphertext bytes may be written at
-     * this stage.
-     */
-    if(1 != EVP_EncryptFinal_ex(ctx, ciphertext + len, &len))
-        handleErrors();
-    ciphertext_len += len;
-
-    /* Clean up */
-    EVP_CIPHER_CTX_free(ctx);
-
-    return ciphertext_len;
-}
-
 int main()
 {
 	
@@ -116,27 +62,46 @@ int main()
     // printf("Ciphertext is:\n");
     // BIO_dump_fp (stdout, (const char *)ciphertext, ciphertext_len);
 
-	unsigned char* plaintext = (unsigned char*) "Helloooo";
-	int size = 8; //strlen((char*)plaintext);
+	unsigned char* plaintext = (unsigned char*) "Yo I'm Ciccio Cappuccio ò.ò";
+	int size = strlen((char*)plaintext);
 
-	Aes256 aes(CIPHER_MODE::CBC);
-	aes.GenerateRandomKey();
+	AES256 aes(CIPHER_MODE::CBC);
 
-	int ciphertextLength;
-	const char* ciphertext = (const char *) aes.Encrypt(plaintext, size, &ciphertextLength);
+	bool addPadding = true;
+	unsigned char* ciphertext = new unsigned char[aes.GetCiphertextFixedLength(size, addPadding)]; //aes.PrepareCiphertextPointer(plaintext, size, addPadding);
+
+	int ciphertextLength = aes.Encrypt(plaintext, size, ciphertext);
 	
-	// Horcrux h;
-	// std::cout << h.Base64Encode(ciphertext, ciphertextLength);
+	Horcrux h;
+	char* b64Encoded = h.Base64Encode(ciphertext, ciphertextLength);
+	unsigned char* b64Decoded = h.Base64DecodeAsUnsigned(b64Encoded, strlen(b64Encoded));
 
-	for(int i = 0; i < ciphertextLength; i++)
+	std::cout << "Plaintext: " << plaintext << std::endl;
+	std::cout << "Ciphertext: ";
+
+	for (int i = 0; i < ciphertextLength; i++)
 	{
 		std::cout << ciphertext[i];
 	}
+	std::cout << std::endl;
 
-	// for (int i = 0; i < ciphertextLength; i++)
-	// {
-	// 	std::cout << cipherText[i];
-	// }
+	std::cout << "Ciphertext length: "  << ciphertextLength << std::endl;
+	std::cout << "Key generated: " << b64Encoded << std::endl;
+
+	int len = strlen(b64Encoded);
+	int actualLength = aes.GetFixedCiphertextLengthFromBase64(b64Decoded, len);
+	unsigned char* ptext2 = new unsigned char[actualLength]; // aes.PreparePlaintextPointer(b64Decoded, len, true);
+	int plaintextLength = aes.Decrypt(b64Decoded, actualLength, ptext2, aes.GetKey(), aes.GetIV());
+
+	std::cout << "Plaintext length: " << plaintextLength << std::endl;
+	std::cout << "Text: ";
+	for(int i = 0; i < plaintextLength; i++)
+	{
+		std::cout << ptext2[i];
+	}
+	std::cout << std::endl;
+
+
 
 	// std::cout << "All: ";
 	

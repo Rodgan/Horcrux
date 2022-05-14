@@ -53,6 +53,10 @@ char* Horcrux::Base64Encode(const char* input, int length)
 
 	return buff;
 }
+unsigned char* Horcrux::Base64DecodeAsUnsigned(char* input, int length)
+{
+	return reinterpret_cast<unsigned char*>(Base64Decode(input, length));
+}
 char * Horcrux::Base64Decode(char * input, int length)
 {
 	BIO * b64 = NULL;

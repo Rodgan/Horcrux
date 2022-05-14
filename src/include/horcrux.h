@@ -8,4 +8,5 @@ public:
     char* Base64Encode(unsigned char* input, int length);
     
     char* Base64Decode(char * input, int length);
+    unsigned char* Base64DecodeAsUnsigned(char * input, int length);
 };

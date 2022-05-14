@@ -17,24 +17,29 @@ enum CIPHER_ALGORITHM
 class ICipher
 {
 protected:
-    // Key length in bytes
+    // Length is stored in bytes
     // It must be set in the derived class before calling GenerateRandomKey();
     int KeyLength = -1; 
     int IvLength = -1;
+    int BlockSize = -1;
+
     CIPHER_MODE CipherMode;
     CIPHER_ALGORITHM CipherAlgorithm;
 public:
-    // Key + IV
+    // Key and IV are stored together.
     // It should be more efficient than storing them in different locations
+    // You can retrieve the Key and the IV pointers using the GetKey() and GetIV() methods.
+    // Remember that Key and IV are NOT strings, so you have to use GetKeyLength() and GetIVLength()
+    // in order to get the actual Key and IV length.
     unsigned char* Key = nullptr;
     
-    ICipher(int keyLength, int ivLength, CIPHER_MODE cipherMode, CIPHER_ALGORITHM cipherAlgorithm);
+    ICipher(int keyLength, int ivLength, int blockSize, CIPHER_MODE cipherMode, CIPHER_ALGORITHM cipherAlgorithm);
     ~ICipher();
     
     // Generate N (KeyLength) random bytes. Used during encryption process
     void GenerateRandomKey();
-    // Set key for decryption process. The key length is defined in the derived class.
-    void SetKey(unsigned char* key);
+    // Set Key and IV by specifying a single buffer
+    void SetKeyAndIV(unsigned char* buffer);
     // Returns a pointer to the key
     unsigned char* GetKey();
     // Returns a pointer to the IV
@@ -43,21 +48,24 @@ public:
     int& GetKeyLength();
     // Get IV Length
     int& GetIVLength();
-    
+    // Prepare the ciphertext pointer
+    int GetCiphertextFixedLength(int& plaintextLength, bool addPadding);
+    int GetFixedCiphertextLengthFromBase64(unsigned char* base64Ciphertext, int& base64CiphertextLength);
+
     const EVP_CIPHER* GetEvpCipher();
     void HandleErrors();
 
-    virtual unsigned char* Encrypt(unsigned char* buffer, int bufferLength, int* outCiphertextLength);
-    virtual void Decrypt(char* buffer);
+    virtual int Encrypt(unsigned char* plaintext, int& plaintextLength, unsigned char* ciphertext);
+    virtual int Decrypt(unsigned char* cipertext, int& cipertextLength, unsigned char* plaintext, unsigned char* key, unsigned char* iv);
 };
 
 // Check https://wiki.openssl.org/index.php/EVP_Symmetric_Encryption_and_Decryption
-class Aes256 : public ICipher
+class AES256 : public ICipher
 {
-    static const int KEY_LENGTH = 32; // 256 bit
-    static const int IV_LENGTH = 16; // 128 bit
+    // Length is stored in BYTES
+    static const int KEY_LENGTH = 256 / 8;
+    static const int IV_LENGTH = 128 / 8;
+    static const int BLOCK_SIZE = 128 / 8;
 public:
-    Aes256(CIPHER_MODE cipherMode);
-    
-    void Decrypt(char* buffer);
+    AES256(CIPHER_MODE cipherMode);
 };

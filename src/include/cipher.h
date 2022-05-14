@@ -4,13 +4,15 @@
 
 enum CIPHER_MODE 
 {
-    CBC = 0, // Cipher block chaining <- safer than ECB
+    CBC, // Cipher block chaining <- safer
+    ECB // Electronic Code Book
     // you can add more elements but you need to implement them
 };
 enum CIPHER_ALGORITHM
 {
-    AES_256
-     // you can add more elements but you need to implement them
+    AES_256,
+    Data_Encryption_Standard // Just wanted to show that we can implement ciphers easily. Please, do not use DES.
+    // you can add more elements but you need to implement them
 };
 
 // Base class for ciphers
@@ -23,6 +25,7 @@ protected:
     int IvLength = -1;
     int BlockSize = -1;
 
+    bool IgnoreIV = false; // In some cipher mode IV is not necessary
     CIPHER_MODE CipherMode;
     CIPHER_ALGORITHM CipherAlgorithm;
 public:
@@ -48,15 +51,16 @@ public:
     int& GetKeyLength();
     // Get IV Length
     int& GetIVLength();
-    // Prepare the ciphertext pointer
+    // Get the actual length of the cipher text (before encrption)
     int GetCiphertextFixedLength(int& plaintextLength, bool addPadding);
+    // Get the actual length of the cipher text (before decryption)
     int GetFixedCiphertextLengthFromBase64(unsigned char* base64Ciphertext, int& base64CiphertextLength);
 
-    const EVP_CIPHER* GetEvpCipher();
     void HandleErrors();
 
     virtual int Encrypt(unsigned char* plaintext, int& plaintextLength, unsigned char* ciphertext);
     virtual int Decrypt(unsigned char* cipertext, int& cipertextLength, unsigned char* plaintext, unsigned char* key, unsigned char* iv);
+    const EVP_CIPHER* GetEvpCipher();
 };
 
 // Check https://wiki.openssl.org/index.php/EVP_Symmetric_Encryption_and_Decryption
@@ -68,4 +72,14 @@ class AES256 : public ICipher
     static const int BLOCK_SIZE = 128 / 8;
 public:
     AES256(CIPHER_MODE cipherMode);
+};
+
+class DES : public ICipher
+{
+    // Length is stored in BYTES
+    static const int KEY_LENGTH = 64 / 8;
+    static const int IV_LENGTH = 128 / 8;
+    static const int BLOCK_SIZE = 64 / 8;
+public:
+    DES(CIPHER_MODE cipherMode);
 };

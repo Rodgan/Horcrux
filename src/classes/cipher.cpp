@@ -9,7 +9,6 @@
 ICipher::ICipher(int keyLength, int ivLength, int blockSize, CIPHER_MODE cipherMode, CIPHER_ALGORITHM cipherAlgorithm)
     : KeyLength(keyLength), IvLength(ivLength), BlockSize(blockSize), Key(new unsigned char[keyLength + ivLength]), CipherMode(cipherMode), CipherAlgorithm(cipherAlgorithm)
 {
-    // Key length and IV length are stored in BYTES
     GenerateRandomKey();
 }
 ICipher::~ICipher()
@@ -21,10 +20,17 @@ void ICipher::GenerateRandomKey()
     // Key contains KEY + IV
     // It should be more efficient than storing them in different locations
     
-    // Uncomment this for loop for debugging purpose
+    // If there are other modes that do NOT need the IV, add them here
+    if (CipherMode == CIPHER_MODE::ECB)
+    {
+        IvLength = 0;
+        IgnoreIV = true;
+    }
+
+    // // Uncomment this for loop for debugging purpose
     // for (int i = 0; i < (KeyLength + IvLength) ; i++)
     // {
-    //     Key[i] = i % 255;
+    //     Key[i] = i % 256;
     // }
     
     RAND_bytes(Key, KeyLength + IvLength);
@@ -39,6 +45,9 @@ unsigned char* ICipher::GetKey()
 }
 unsigned char* ICipher::GetIV()
 {
+    if (IgnoreIV)
+        return NULL;
+
     return Key + KeyLength;
 }
 int& ICipher::GetKeyLength()
@@ -80,20 +89,6 @@ int ICipher::GetFixedCiphertextLengthFromBase64(unsigned char* base64Ciphertext,
     int actualLength = base64Bytes - (base64Bytes % BlockSize);
 
     return actualLength;
-}
-const EVP_CIPHER* ICipher::GetEvpCipher()
-{
-    EVP_CIPHER* c = nullptr;
-
-    switch(CipherAlgorithm)
-    {
-        case CIPHER_ALGORITHM::AES_256:
-            if (CipherMode == CIPHER_MODE::CBC) return EVP_aes_256_cbc();
-        break;
-    }
-
-    std::cout << "Cipher algorithm or mode not supported";
-    abort();
 }
 int ICipher::Encrypt(unsigned char* plaintext, int& plaintextLength, unsigned char* ciphertext)
 {
@@ -149,11 +144,34 @@ int ICipher::Decrypt(unsigned char* cipertext, int& cipertextLength, unsigned ch
 
     return plaintextLength;
 }
+const EVP_CIPHER* ICipher::GetEvpCipher()
+{
+    EVP_CIPHER* c = nullptr;
+    switch(CipherAlgorithm)
+    {
+        case CIPHER_ALGORITHM::AES_256:
+            if (CipherMode == CIPHER_MODE::CBC) return EVP_aes_256_cbc();
+            if (CipherMode == CIPHER_MODE::ECB) return EVP_aes_256_ecb();
+        break;
 
-// ############ AES256 - Derived Class definitions ############
-#pragma region AES-256
+        case CIPHER_ALGORITHM::Data_Encryption_Standard:
+            if (CipherMode == CIPHER_MODE::CBC) return EVP_des_cbc();
+            if (CipherMode == CIPHER_MODE::ECB) return EVP_des_ecb();
+        break;
+
+    }
+
+    // Using cout instead of cerr for testing only
+    std::cout << "Cipher algorithm or mode not supported";
+    abort();
+}
+
+// ############ Derived Class definitions ############
 AES256::AES256(CIPHER_MODE cipherMode) : ICipher(KEY_LENGTH, IV_LENGTH, BLOCK_SIZE, cipherMode, CIPHER_ALGORITHM::AES_256)
 {
 
 }
-#pragma endregion
+DES::DES(CIPHER_MODE cipherMode) : ICipher(KEY_LENGTH, IV_LENGTH, BLOCK_SIZE, cipherMode, CIPHER_ALGORITHM::Data_Encryption_Standard)
+{
+
+}

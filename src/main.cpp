@@ -65,7 +65,7 @@ int main()
 	unsigned char* plaintext = (unsigned char*) "Yo I'm Ciccio Cappuccio ò.ò";
 	int size = strlen((char*)plaintext);
 
-	AES256 aes(CIPHER_MODE::CBC);
+	DES aes(CIPHER_MODE::CBC);
 
 	bool addPadding = true;
 	unsigned char* ciphertext = new unsigned char[aes.GetCiphertextFixedLength(size, addPadding)]; //aes.PrepareCiphertextPointer(plaintext, size, addPadding);
@@ -75,6 +75,9 @@ int main()
 	Horcrux h;
 	char* b64Encoded = h.Base64Encode(ciphertext, ciphertextLength);
 	unsigned char* b64Decoded = h.Base64DecodeAsUnsigned(b64Encoded, strlen(b64Encoded));
+
+	std::cout << "Key only: " << h.Base64Encode(aes.GetKey(), aes.GetKeyLength()) << std::endl;
+	std::cout << "IV only: " << h.Base64Encode(aes.GetIV(), aes.GetIVLength()) << std::endl;
 
 	std::cout << "Plaintext: " << plaintext << std::endl;
 	std::cout << "Ciphertext: ";
@@ -86,7 +89,7 @@ int main()
 	std::cout << std::endl;
 
 	std::cout << "Ciphertext length: "  << ciphertextLength << std::endl;
-	std::cout << "Key generated: " << b64Encoded << std::endl;
+	std::cout << "Ciphertext in base64: " << b64Encoded << std::endl;
 
 	int len = strlen(b64Encoded);
 	int actualLength = aes.GetFixedCiphertextLengthFromBase64(b64Decoded, len);
@@ -126,6 +129,5 @@ int main()
 	// }
 	// std::cout << std::endl;
 
-	std::cin.get();
 	return 0;
 }

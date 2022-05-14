@@ -1,3 +1,5 @@
 /.vscode
 /make.cmd
 /Task C++ Developer Cubbit.pdf
+src/horcrux.exe
+build/horcrux.exe

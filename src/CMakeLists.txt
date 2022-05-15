@@ -6,4 +6,6 @@ target_include_directories(Horcrux PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 IF (WIN32)
     target_link_libraries(Horcrux "${CMAKE_CURRENT_SOURCE_DIR}/lib/libcrypto.lib")
+ELSE()
+    target_link_libraries(Horcrux "${CMAKE_CURRENT_SOURCE_DIR}/lib/libcrypto.a" ${CMAKE_DL_LIBS})
 ENDIF()

@@ -30,7 +30,8 @@ void LocalDisk::EncryptFileAndSave(char* inputFile, int& chunks, char* fileNameP
     int ciphertextLength = cipher.Encrypt(buffer, bufferLength, ciphertext);
     SaveEncryptedFile(ciphertext, ciphertextLength, chunks, fileNamePrefix, outputDirectory);
 
-    // delete[] ciphertext; // not working uhm...
+    // terminate called after throwing an instance of 'std::bad_alloc' what(): std::bad_alloc
+    //delete[] ciphertext;  // Why? Uhm... Need an explaination.
 }
 void LocalDisk::SaveEncryptedFile(unsigned char* ciphertext, int& ciphertextLength, int& chunks, char* fileNamePrefix, char* outputDirectory)
 {

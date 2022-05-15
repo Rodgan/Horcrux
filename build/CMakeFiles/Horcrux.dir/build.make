@@ -114,11 +114,27 @@ CMakeFiles/Horcrux.dir/classes/cipher.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Horcrux.dir/classes/cipher.cpp.s"
 	C:/MinGW/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:/dev/Horcrux/src/classes/cipher.cpp -o CMakeFiles/Horcrux.dir/classes/cipher.cpp.s
 
+CMakeFiles/Horcrux.dir/classes/file_manager.cpp.obj: CMakeFiles/Horcrux.dir/flags.make
+CMakeFiles/Horcrux.dir/classes/file_manager.cpp.obj: CMakeFiles/Horcrux.dir/includes_CXX.rsp
+CMakeFiles/Horcrux.dir/classes/file_manager.cpp.obj: C:/dev/Horcrux/src/classes/file_manager.cpp
+CMakeFiles/Horcrux.dir/classes/file_manager.cpp.obj: CMakeFiles/Horcrux.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:/dev/Horcrux/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Horcrux.dir/classes/file_manager.cpp.obj"
+	C:/MinGW/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Horcrux.dir/classes/file_manager.cpp.obj -MF CMakeFiles/Horcrux.dir/classes/file_manager.cpp.obj.d -o CMakeFiles/Horcrux.dir/classes/file_manager.cpp.obj -c C:/dev/Horcrux/src/classes/file_manager.cpp
+
+CMakeFiles/Horcrux.dir/classes/file_manager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Horcrux.dir/classes/file_manager.cpp.i"
+	C:/MinGW/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:/dev/Horcrux/src/classes/file_manager.cpp > CMakeFiles/Horcrux.dir/classes/file_manager.cpp.i
+
+CMakeFiles/Horcrux.dir/classes/file_manager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Horcrux.dir/classes/file_manager.cpp.s"
+	C:/MinGW/bin/c++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:/dev/Horcrux/src/classes/file_manager.cpp -o CMakeFiles/Horcrux.dir/classes/file_manager.cpp.s
+
 # Object files for target Horcrux
 Horcrux_OBJECTS = \
 "CMakeFiles/Horcrux.dir/main.cpp.obj" \
 "CMakeFiles/Horcrux.dir/classes/horcrux.cpp.obj" \
-"CMakeFiles/Horcrux.dir/classes/cipher.cpp.obj"
+"CMakeFiles/Horcrux.dir/classes/cipher.cpp.obj" \
+"CMakeFiles/Horcrux.dir/classes/file_manager.cpp.obj"
 
 # External object files for target Horcrux
 Horcrux_EXTERNAL_OBJECTS =
@@ -126,11 +142,12 @@ Horcrux_EXTERNAL_OBJECTS =
 Horcrux.exe: CMakeFiles/Horcrux.dir/main.cpp.obj
 Horcrux.exe: CMakeFiles/Horcrux.dir/classes/horcrux.cpp.obj
 Horcrux.exe: CMakeFiles/Horcrux.dir/classes/cipher.cpp.obj
+Horcrux.exe: CMakeFiles/Horcrux.dir/classes/file_manager.cpp.obj
 Horcrux.exe: CMakeFiles/Horcrux.dir/build.make
 Horcrux.exe: C:/dev/Horcrux/src/lib/libcrypto.lib
 Horcrux.exe: CMakeFiles/Horcrux.dir/linklibs.rsp
 Horcrux.exe: CMakeFiles/Horcrux.dir/objects1.rsp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:/dev/Horcrux/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable Horcrux.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:/dev/Horcrux/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable Horcrux.exe"
 	"C:/Program Files/CMake/bin/cmake.exe" -E rm -f CMakeFiles/Horcrux.dir/objects.a
 	C:/MinGW/bin/ar.exe qc CMakeFiles/Horcrux.dir/objects.a @CMakeFiles/Horcrux.dir/objects1.rsp
 	C:/MinGW/bin/c++.exe -Wl,--whole-archive CMakeFiles/Horcrux.dir/objects.a -Wl,--no-whole-archive -o Horcrux.exe -Wl,--out-implib,libHorcrux.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/Horcrux.dir/linklibs.rsp

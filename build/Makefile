@@ -153,6 +153,30 @@ classes/cipher.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/classes/cipher.cpp.s
 .PHONY : classes/cipher.cpp.s
 
+classes/file_manager.obj: classes/file_manager.cpp.obj
+.PHONY : classes/file_manager.obj
+
+# target to build an object file
+classes/file_manager.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/classes/file_manager.cpp.obj
+.PHONY : classes/file_manager.cpp.obj
+
+classes/file_manager.i: classes/file_manager.cpp.i
+.PHONY : classes/file_manager.i
+
+# target to preprocess a source file
+classes/file_manager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/classes/file_manager.cpp.i
+.PHONY : classes/file_manager.cpp.i
+
+classes/file_manager.s: classes/file_manager.cpp.s
+.PHONY : classes/file_manager.s
+
+# target to generate assembly for a file
+classes/file_manager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/classes/file_manager.cpp.s
+.PHONY : classes/file_manager.cpp.s
+
 classes/horcrux.obj: classes/horcrux.cpp.obj
 .PHONY : classes/horcrux.obj
 
@@ -213,6 +237,9 @@ help:
 	@echo "... classes/cipher.obj"
 	@echo "... classes/cipher.i"
 	@echo "... classes/cipher.s"
+	@echo "... classes/file_manager.obj"
+	@echo "... classes/file_manager.i"
+	@echo "... classes/file_manager.s"
 	@echo "... classes/horcrux.obj"
 	@echo "... classes/horcrux.i"
 	@echo "... classes/horcrux.s"

@@ -42,7 +42,7 @@ public:
     // Generate N (KeyLength) random bytes. Used during encryption process
     void GenerateRandomKey();
     // Set Key and IV by specifying a single buffer
-    void SetKeyAndIV(unsigned char* buffer);
+    void SetKeyAndIVFromBase64String(char* buffer, int bufferLength);
     // Returns a pointer to the key
     unsigned char* GetKey();
     // Returns a pointer to the IV
@@ -51,10 +51,16 @@ public:
     int& GetKeyLength();
     // Get IV Length
     int& GetIVLength();
+    // Just a wrapper. You can do it using GetKey() and GetKeyLength() + GetIVLEngth();
+    unsigned char* GetFullKeyAndIv(int& outTotalLength);
+
     // Get the actual length of the cipher text (before encrption)
     int GetCiphertextFixedLength(int& plaintextLength, bool addPadding);
     // Get the actual length of the cipher text (before decryption)
     int GetFixedCiphertextLengthFromBase64(unsigned char* base64Ciphertext, int& base64CiphertextLength);
+
+    // Display the algorithm informations to the user
+    void DisplayAlgorithmInfo();
 
     void HandleErrors();
 
@@ -76,12 +82,12 @@ public:
     AES256(CIPHER_MODE cipherMode);
 };
 
-class DES : public ICipher
+class DataEncryptionStandard : public ICipher
 {
     // Length is stored in BYTES
     static const int KEY_LENGTH = 64 / 8;
     static const int IV_LENGTH = 128 / 8;
     static const int BLOCK_SIZE = 64 / 8;
 public:
-    DES(CIPHER_MODE cipherMode);
+    DataEncryptionStandard(CIPHER_MODE cipherMode);
 };

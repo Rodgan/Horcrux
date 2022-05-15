@@ -1,13 +1,17 @@
+#include "horcrux.h"
 #include "cipher.h"
+#include "file_manager.h"
+
 #include <openssl/rand.h>
 #include <openssl/conf.h>
 #include <openssl/evp.h>
 #include <openssl/err.h>
 #include <iostream>
+#include <string>
 
 // ############ ICipher - Base Class definitions ############
 ICipher::ICipher(int keyLength, int ivLength, int blockSize, CIPHER_MODE cipherMode, CIPHER_ALGORITHM cipherAlgorithm)
-    : KeyLength(keyLength), IvLength(ivLength), BlockSize(blockSize), Key(new unsigned char[keyLength + ivLength]), CipherMode(cipherMode), CipherAlgorithm(cipherAlgorithm)
+    : KeyLength(keyLength), IvLength(ivLength), BlockSize(blockSize), CipherMode(cipherMode), CipherAlgorithm(cipherAlgorithm)
 {
     // If there are other modes that do NOT need the IV, add them here
     if (CipherMode == CIPHER_MODE::ECB)
@@ -15,6 +19,8 @@ ICipher::ICipher(int keyLength, int ivLength, int blockSize, CIPHER_MODE cipherM
         IvLength = 0;
         IgnoreIV = true;
     }
+
+    Key = new unsigned char[KeyLength + IvLength];
 }
 ICipher::~ICipher()
 {
@@ -26,16 +32,25 @@ void ICipher::GenerateRandomKey()
     // It should be more efficient than storing them in different locations
     
     // Uncomment this for loop for debugging purpose
-    for (int i = 0; i < (KeyLength + IvLength) ; i++)
+    // for (int i = 0; i < (KeyLength + IvLength) ; i++)
+    // {
+    //     Key[i] = i % 256;
+    // }
+    
+    RAND_bytes(Key, KeyLength + IvLength);
+}
+void ICipher::SetKeyAndIVFromBase64String(char* buffer, int bufferLength)
+{
+    int dataRead;
+    unsigned char* key = Horcrux::Base64DecodeAsUnsigned(buffer, bufferLength, dataRead);
+
+    if (dataRead != KeyLength + IvLength)
     {
-        Key[i] = i % 256;
+        std::string message = "Unable to set Key and IV. Expected a buffer of " + std::to_string(KeyLength + IvLength) + " bytes. Your key is " + std::to_string(dataRead) + " bytes.";
+        Horcrux::PrintErrorAndAbort(message.c_str());
     }
     
-    // RAND_bytes(Key, KeyLength + IvLength);
-}
-void ICipher::SetKeyAndIV(unsigned char* buffer)
-{
-    Key = buffer;
+    Key = key;
 }
 unsigned char* ICipher::GetKey()
 {
@@ -56,10 +71,57 @@ int& ICipher::GetIVLength()
 {
     return IvLength;
 }
+unsigned char* ICipher::GetFullKeyAndIv(int& outTotalLength)
+{
+    outTotalLength = KeyLength + IvLength;
+    return Key;
+}
 void ICipher::HandleErrors()
 {
     ERR_print_errors_fp(stderr);
     abort();
+}
+void ICipher::DisplayAlgorithmInfo()
+{
+    std::cout << "=====ALGORITHM INFO=====" << std::endl;
+    std::cout << "Algorithm: ";
+
+    switch(CipherAlgorithm)
+    {
+        case CIPHER_ALGORITHM::AES_256:
+            std::cout << "AES256 (Advanced Encryption Standard)";
+        break;
+        case CIPHER_ALGORITHM::Data_Encryption_Standard:
+            std::cout << "DES (Data Encryption Standard)";
+        break;
+        default:
+            std::cout << "Algorithm not recognized";
+        break;
+    }
+
+    std::cout << std::endl << "Mode: ";
+
+    switch(CipherMode)
+    {
+        case CIPHER_MODE::CBC:
+            std::cout << "CBC (Cipher Block Chaining)";
+        break;
+
+        case CIPHER_MODE::ECB:
+            std::cout << "ECB (Electronic Code Book)";
+        break;
+    
+        default:
+            std::cout << "Mode not recognized";
+        break;
+    }
+
+    std::cout << std::endl << "Key Length: " << std::to_string(KeyLength);
+    std::cout << std::endl << "IV: " << (IgnoreIV ? "No" : "Yes");
+    if (!IgnoreIV)
+        std::cout << std::endl << "IV Length: " << std::to_string(IvLength);
+
+    std::cout << std::endl << "=======================" << std::endl;
 }
 int ICipher::GetCiphertextFixedLength(int& plaintextLength, bool addPadding)
 {
@@ -77,8 +139,8 @@ int ICipher::GetFixedCiphertextLengthFromBase64(unsigned char* base64Ciphertext,
     // Then, we divide it by 8 and we get the value in bytes.
     // We can now subtract the added padding from the value in bytes and get the
     // actual ciphertext length.
-    int base64_char_bits = 6;
-    int base64Bytes = (base64CiphertextLength * base64_char_bits) / 8;
+    
+    int base64Bytes = (base64CiphertextLength * Horcrux::BASE64_CHAR_BITS) / 8;
     int actualLength = base64Bytes - (base64Bytes % BlockSize);
 
     return actualLength;
@@ -138,7 +200,10 @@ int ICipher::Decrypt(unsigned char* ciphertext, int& ciphertextLength, unsigned 
     plaintextLength = len;
 
     if(1 != EVP_DecryptFinal_ex(context, outPlaintext + len, &len))
+    {
+        std::cout << "Unable to decrypt. Wrong key?" << std::endl;
         HandleErrors();
+    }
 
     plaintextLength += len;
 
@@ -164,8 +229,7 @@ const EVP_CIPHER* ICipher::GetEvpCipher()
     }
 
     // Using cout instead of cerr for testing only
-    std::cout << "Cipher algorithm or mode not supported";
-    abort();
+    Horcrux::PrintErrorAndAbort("Cipher algorithm or mode not supported");
 }
 
 // ############ Derived Class definitions ############
@@ -173,7 +237,7 @@ AES256::AES256(CIPHER_MODE cipherMode) : ICipher(KEY_LENGTH, IV_LENGTH, BLOCK_SI
 {
 
 }
-DES::DES(CIPHER_MODE cipherMode) : ICipher(KEY_LENGTH, IV_LENGTH, BLOCK_SIZE, cipherMode, CIPHER_ALGORITHM::Data_Encryption_Standard)
+DataEncryptionStandard::DataEncryptionStandard(CIPHER_MODE cipherMode) : ICipher(KEY_LENGTH, IV_LENGTH, BLOCK_SIZE, cipherMode, CIPHER_ALGORITHM::Data_Encryption_Standard)
 {
 
 }

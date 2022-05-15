@@ -81,12 +81,12 @@ clean: CMakeFiles/Horcrux.dir/clean
 CMakeFiles/Horcrux.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:/dev/Horcrux/build/CMakeFiles --progress-num=1,2,3,4 "Built target Horcrux"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:/dev/Horcrux/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target Horcrux"
 .PHONY : CMakeFiles/Horcrux.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Horcrux.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/dev/Horcrux/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/dev/Horcrux/build/CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Horcrux.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:/dev/Horcrux/build/CMakeFiles 0
 .PHONY : CMakeFiles/Horcrux.dir/rule

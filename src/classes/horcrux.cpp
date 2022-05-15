@@ -6,16 +6,9 @@
 #include <string>
 #include "horcrux.h"
 
+
 void Horcrux::Encrypt()
-{
-	std::string text = "Hey manno!";
-	char* b64 = Base64Encode(text.c_str(), text.length());
-	std::cout << text << ": " << b64 << std::endl;
-	
-
-	char* plain = Base64Decode(b64, strlen(b64));
-	std::cout << b64 << ": " << plain << std::endl;
-
+{	
 	// std::string text = "Hey!";
 	// char * enc_output = Base64Encode(text.c_str(), text.length());
 	// std::cout << text << ": " << enc_output << std::endl;

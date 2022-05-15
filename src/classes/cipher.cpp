@@ -9,7 +9,12 @@
 ICipher::ICipher(int keyLength, int ivLength, int blockSize, CIPHER_MODE cipherMode, CIPHER_ALGORITHM cipherAlgorithm)
     : KeyLength(keyLength), IvLength(ivLength), BlockSize(blockSize), Key(new unsigned char[keyLength + ivLength]), CipherMode(cipherMode), CipherAlgorithm(cipherAlgorithm)
 {
-    GenerateRandomKey();
+    // If there are other modes that do NOT need the IV, add them here
+    if (CipherMode == CIPHER_MODE::ECB)
+    {
+        IvLength = 0;
+        IgnoreIV = true;
+    }
 }
 ICipher::~ICipher()
 {
@@ -20,20 +25,13 @@ void ICipher::GenerateRandomKey()
     // Key contains KEY + IV
     // It should be more efficient than storing them in different locations
     
-    // If there are other modes that do NOT need the IV, add them here
-    if (CipherMode == CIPHER_MODE::ECB)
+    // Uncomment this for loop for debugging purpose
+    for (int i = 0; i < (KeyLength + IvLength) ; i++)
     {
-        IvLength = 0;
-        IgnoreIV = true;
+        Key[i] = i % 256;
     }
-
-    // // Uncomment this for loop for debugging purpose
-    // for (int i = 0; i < (KeyLength + IvLength) ; i++)
-    // {
-    //     Key[i] = i % 256;
-    // }
     
-    RAND_bytes(Key, KeyLength + IvLength);
+    // RAND_bytes(Key, KeyLength + IvLength);
 }
 void ICipher::SetKeyAndIV(unsigned char* buffer)
 {
@@ -69,12 +67,7 @@ int ICipher::GetCiphertextFixedLength(int& plaintextLength, bool addPadding)
     if (!addPadding)
         return plaintextLength;
 
-    int paddingToAdd = BlockSize % plaintextLength;
-
-    if (paddingToAdd == 0)
-        paddingToAdd = BlockSize;
-
-    return plaintextLength + paddingToAdd;
+    return (plaintextLength - (plaintextLength % BlockSize)) + BlockSize;
 }
 int ICipher::GetFixedCiphertextLengthFromBase64(unsigned char* base64Ciphertext, int& base64CiphertextLength)
 {   
@@ -90,7 +83,11 @@ int ICipher::GetFixedCiphertextLengthFromBase64(unsigned char* base64Ciphertext,
 
     return actualLength;
 }
-int ICipher::Encrypt(unsigned char* plaintext, int& plaintextLength, unsigned char* ciphertext)
+int ICipher::Encrypt(char* plaintext, int& plaintextLength, unsigned char* outCiphertext)
+{
+    return Encrypt(reinterpret_cast<unsigned char*>(plaintext), plaintextLength, outCiphertext);
+}
+int ICipher::Encrypt(unsigned char* plaintext, int& plaintextLength, unsigned char* outCiphertext)
 {
     EVP_CIPHER_CTX *context = EVP_CIPHER_CTX_new();
     
@@ -103,12 +100,12 @@ int ICipher::Encrypt(unsigned char* plaintext, int& plaintextLength, unsigned ch
     if (1 != EVP_EncryptInit_ex(context, GetEvpCipher(), NULL, GetKey(), GetIV()))
         HandleErrors();
 
-    if(1 != EVP_EncryptUpdate(context, ciphertext, &len, plaintext, plaintextLength))
+    if(1 != EVP_EncryptUpdate(context, outCiphertext, &len, plaintext, plaintextLength))
         HandleErrors();
 
     ciphertextLength = len;
 
-    if(1 != EVP_EncryptFinal_ex(context, ciphertext + len, &len))
+    if(1 != EVP_EncryptFinal_ex(context, outCiphertext + len, &len))
         HandleErrors();
 
     ciphertextLength += len;
@@ -117,7 +114,12 @@ int ICipher::Encrypt(unsigned char* plaintext, int& plaintextLength, unsigned ch
 
     return ciphertextLength;
 }
-int ICipher::Decrypt(unsigned char* cipertext, int& cipertextLength, unsigned char* plaintext, unsigned char* key, unsigned char* iv)
+int ICipher::Decrypt(char* ciphertext, int& ciphertextLength, unsigned char* outPlaintext, unsigned char* key, unsigned char* iv)
+{
+    return Decrypt(reinterpret_cast<unsigned char*>(ciphertext), ciphertextLength, outPlaintext, key, iv);
+}
+
+int ICipher::Decrypt(unsigned char* ciphertext, int& ciphertextLength, unsigned char* outPlaintext, unsigned char* key, unsigned char* iv)
 {
     EVP_CIPHER_CTX *context = EVP_CIPHER_CTX_new();
     
@@ -130,12 +132,12 @@ int ICipher::Decrypt(unsigned char* cipertext, int& cipertextLength, unsigned ch
     if (1 != EVP_DecryptInit_ex(context, GetEvpCipher(), NULL, key, iv))
         HandleErrors();
 
-    if(1 != EVP_DecryptUpdate(context, plaintext, &len, cipertext, cipertextLength))
+    if(1 != EVP_DecryptUpdate(context, outPlaintext, &len, ciphertext, ciphertextLength))
         HandleErrors();
 
     plaintextLength = len;
 
-    if(1 != EVP_DecryptFinal_ex(context, plaintext + len, &len))
+    if(1 != EVP_DecryptFinal_ex(context, outPlaintext + len, &len))
         HandleErrors();
 
     plaintextLength += len;

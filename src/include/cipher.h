@@ -58,8 +58,10 @@ public:
 
     void HandleErrors();
 
-    virtual int Encrypt(unsigned char* plaintext, int& plaintextLength, unsigned char* ciphertext);
-    virtual int Decrypt(unsigned char* cipertext, int& cipertextLength, unsigned char* plaintext, unsigned char* key, unsigned char* iv);
+    virtual int Encrypt(char* plaintext, int& plaintextLength, unsigned char* outCiphertext);
+    virtual int Encrypt(unsigned char* plaintext, int& plaintextLength, unsigned char* outCiphertext);
+    virtual int Decrypt(unsigned char* ciphertext, int& ciphertextLength, unsigned char* outPlaintext, unsigned char* key, unsigned char* iv);
+    virtual int Decrypt(char* ciphertext, int& ciphertextLength, unsigned char* outPlaintext, unsigned char* key, unsigned char* iv);
     const EVP_CIPHER* GetEvpCipher();
 };
 

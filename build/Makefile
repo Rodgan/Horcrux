@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named Horcrux
+# Target rules for targets named horcrux
 
 # Build rule for target.
-Horcrux: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Horcrux
-.PHONY : Horcrux
+horcrux: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 horcrux
+.PHONY : horcrux
 
 # fast build rule for target.
-Horcrux/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/build
-.PHONY : Horcrux/fast
+horcrux/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horcrux.dir/build.make CMakeFiles/horcrux.dir/build
+.PHONY : horcrux/fast
 
 classes/cipher.obj: classes/cipher.cpp.obj
 .PHONY : classes/cipher.obj
 
 # target to build an object file
 classes/cipher.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/classes/cipher.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horcrux.dir/build.make CMakeFiles/horcrux.dir/classes/cipher.cpp.obj
 .PHONY : classes/cipher.cpp.obj
 
 classes/cipher.i: classes/cipher.cpp.i
@@ -142,7 +142,7 @@ classes/cipher.i: classes/cipher.cpp.i
 
 # target to preprocess a source file
 classes/cipher.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/classes/cipher.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horcrux.dir/build.make CMakeFiles/horcrux.dir/classes/cipher.cpp.i
 .PHONY : classes/cipher.cpp.i
 
 classes/cipher.s: classes/cipher.cpp.s
@@ -150,7 +150,7 @@ classes/cipher.s: classes/cipher.cpp.s
 
 # target to generate assembly for a file
 classes/cipher.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/classes/cipher.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horcrux.dir/build.make CMakeFiles/horcrux.dir/classes/cipher.cpp.s
 .PHONY : classes/cipher.cpp.s
 
 classes/file_manager.obj: classes/file_manager.cpp.obj
@@ -158,7 +158,7 @@ classes/file_manager.obj: classes/file_manager.cpp.obj
 
 # target to build an object file
 classes/file_manager.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/classes/file_manager.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horcrux.dir/build.make CMakeFiles/horcrux.dir/classes/file_manager.cpp.obj
 .PHONY : classes/file_manager.cpp.obj
 
 classes/file_manager.i: classes/file_manager.cpp.i
@@ -166,7 +166,7 @@ classes/file_manager.i: classes/file_manager.cpp.i
 
 # target to preprocess a source file
 classes/file_manager.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/classes/file_manager.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horcrux.dir/build.make CMakeFiles/horcrux.dir/classes/file_manager.cpp.i
 .PHONY : classes/file_manager.cpp.i
 
 classes/file_manager.s: classes/file_manager.cpp.s
@@ -174,7 +174,7 @@ classes/file_manager.s: classes/file_manager.cpp.s
 
 # target to generate assembly for a file
 classes/file_manager.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/classes/file_manager.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horcrux.dir/build.make CMakeFiles/horcrux.dir/classes/file_manager.cpp.s
 .PHONY : classes/file_manager.cpp.s
 
 classes/horcrux.obj: classes/horcrux.cpp.obj
@@ -182,7 +182,7 @@ classes/horcrux.obj: classes/horcrux.cpp.obj
 
 # target to build an object file
 classes/horcrux.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/classes/horcrux.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horcrux.dir/build.make CMakeFiles/horcrux.dir/classes/horcrux.cpp.obj
 .PHONY : classes/horcrux.cpp.obj
 
 classes/horcrux.i: classes/horcrux.cpp.i
@@ -190,7 +190,7 @@ classes/horcrux.i: classes/horcrux.cpp.i
 
 # target to preprocess a source file
 classes/horcrux.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/classes/horcrux.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horcrux.dir/build.make CMakeFiles/horcrux.dir/classes/horcrux.cpp.i
 .PHONY : classes/horcrux.cpp.i
 
 classes/horcrux.s: classes/horcrux.cpp.s
@@ -198,7 +198,7 @@ classes/horcrux.s: classes/horcrux.cpp.s
 
 # target to generate assembly for a file
 classes/horcrux.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/classes/horcrux.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horcrux.dir/build.make CMakeFiles/horcrux.dir/classes/horcrux.cpp.s
 .PHONY : classes/horcrux.cpp.s
 
 main.obj: main.cpp.obj
@@ -206,7 +206,7 @@ main.obj: main.cpp.obj
 
 # target to build an object file
 main.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/main.cpp.obj
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horcrux.dir/build.make CMakeFiles/horcrux.dir/main.cpp.obj
 .PHONY : main.cpp.obj
 
 main.i: main.cpp.i
@@ -214,7 +214,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horcrux.dir/build.make CMakeFiles/horcrux.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -222,7 +222,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horcrux.dir/build.make CMakeFiles/horcrux.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -233,7 +233,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... Horcrux"
+	@echo "... horcrux"
 	@echo "... classes/cipher.obj"
 	@echo "... classes/cipher.i"
 	@echo "... classes/cipher.s"

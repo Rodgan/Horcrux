@@ -8,10 +8,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "C:/dev/Horcrux/src/classes/cipher.cpp" "CMakeFiles/Horcrux.dir/classes/cipher.cpp.obj" "gcc" "CMakeFiles/Horcrux.dir/classes/cipher.cpp.obj.d"
-  "C:/dev/Horcrux/src/classes/file_manager.cpp" "CMakeFiles/Horcrux.dir/classes/file_manager.cpp.obj" "gcc" "CMakeFiles/Horcrux.dir/classes/file_manager.cpp.obj.d"
-  "C:/dev/Horcrux/src/classes/horcrux.cpp" "CMakeFiles/Horcrux.dir/classes/horcrux.cpp.obj" "gcc" "CMakeFiles/Horcrux.dir/classes/horcrux.cpp.obj.d"
-  "C:/dev/Horcrux/src/main.cpp" "CMakeFiles/Horcrux.dir/main.cpp.obj" "gcc" "CMakeFiles/Horcrux.dir/main.cpp.obj.d"
+  "C:/dev/Horcrux/src/classes/cipher.cpp" "CMakeFiles/horcrux.dir/classes/cipher.cpp.obj" "gcc" "CMakeFiles/horcrux.dir/classes/cipher.cpp.obj.d"
+  "C:/dev/Horcrux/src/classes/file_manager.cpp" "CMakeFiles/horcrux.dir/classes/file_manager.cpp.obj" "gcc" "CMakeFiles/horcrux.dir/classes/file_manager.cpp.obj.d"
+  "C:/dev/Horcrux/src/classes/horcrux.cpp" "CMakeFiles/horcrux.dir/classes/horcrux.cpp.obj" "gcc" "CMakeFiles/horcrux.dir/classes/horcrux.cpp.obj.d"
+  "C:/dev/Horcrux/src/main.cpp" "CMakeFiles/horcrux.dir/main.cpp.obj" "gcc" "CMakeFiles/horcrux.dir/main.cpp.obj.d"
   )
 
 # Targets to which this target links.

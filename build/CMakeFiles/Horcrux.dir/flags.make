@@ -4,7 +4,7 @@
 # compile CXX with C:/MinGW/bin/c++.exe
 CXX_DEFINES = 
 
-CXX_INCLUDES = @CMakeFiles/Horcrux.dir/includes_CXX.rsp
+CXX_INCLUDES = @CMakeFiles/horcrux.dir/includes_CXX.rsp
 
 CXX_FLAGS = 
 

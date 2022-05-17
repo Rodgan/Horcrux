@@ -1,2 +1,2 @@
-# Empty compiler generated dependencies file for Horcrux.
+# Empty compiler generated dependencies file for horcrux.
 # This may be replaced when dependencies are built.

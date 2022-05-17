@@ -63,7 +63,7 @@ CMAKE_BINARY_DIR = C:/dev/Horcrux/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/Horcrux.dir/all
+all: CMakeFiles/horcrux.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,34 +71,34 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/Horcrux.dir/clean
+clean: CMakeFiles/horcrux.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/Horcrux.dir
+# Target rules for target CMakeFiles/horcrux.dir
 
 # All Build rule for target.
-CMakeFiles/Horcrux.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:/dev/Horcrux/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target Horcrux"
-.PHONY : CMakeFiles/Horcrux.dir/all
+CMakeFiles/horcrux.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horcrux.dir/build.make CMakeFiles/horcrux.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horcrux.dir/build.make CMakeFiles/horcrux.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=C:/dev/Horcrux/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target horcrux"
+.PHONY : CMakeFiles/horcrux.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/Horcrux.dir/rule: cmake_check_build_system
+CMakeFiles/horcrux.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start C:/dev/Horcrux/build/CMakeFiles 5
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Horcrux.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/horcrux.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start C:/dev/Horcrux/build/CMakeFiles 0
-.PHONY : CMakeFiles/Horcrux.dir/rule
+.PHONY : CMakeFiles/horcrux.dir/rule
 
 # Convenience name for target.
-Horcrux: CMakeFiles/Horcrux.dir/rule
-.PHONY : Horcrux
+horcrux: CMakeFiles/horcrux.dir/rule
+.PHONY : horcrux
 
 # clean rule for target.
-CMakeFiles/Horcrux.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Horcrux.dir/build.make CMakeFiles/Horcrux.dir/clean
-.PHONY : CMakeFiles/Horcrux.dir/clean
+CMakeFiles/horcrux.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/horcrux.dir/build.make CMakeFiles/horcrux.dir/clean
+.PHONY : CMakeFiles/horcrux.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

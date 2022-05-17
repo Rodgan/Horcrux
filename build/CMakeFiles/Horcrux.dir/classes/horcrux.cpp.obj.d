@@ -1,4 +1,4 @@
-CMakeFiles/Horcrux.dir/classes/horcrux.cpp.obj: \
+CMakeFiles/horcrux.dir/classes/horcrux.cpp.obj: \
  C:/dev/Horcrux/src/classes/horcrux.cpp \
  C:/dev/Horcrux/src/include/horcrux.h C:/dev/Horcrux/src/include/cipher.h \
  C:/dev/Horcrux/src/include/openssl/evp.h \

@@ -1,3 +1,3 @@
-C:/dev/Horcrux/build/CMakeFiles/Horcrux.dir
+C:/dev/Horcrux/build/CMakeFiles/horcrux.dir
 C:/dev/Horcrux/build/CMakeFiles/edit_cache.dir
 C:/dev/Horcrux/build/CMakeFiles/rebuild_cache.dir

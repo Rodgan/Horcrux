@@ -31,18 +31,33 @@ void ShowHelpAndAbort()
 	std::cout << " -a\t\tEncryption algorithm" << std::endl;
 	std::cout << "\t\tAES256,DES (default: AES256)" << std::endl;
 	std::cout << " -m\t\tMode of operation" << std::endl;
-	std::cout << "\t\tCBC,ECB (default: CBC)" << std::endl << std::endl;
+	std::cout << "\t\tCBC,ECB (default: CBC)" << std::endl;
+	std::cout << " -p\t\tPrefix of each chunk (encryption process only)" << std::endl;
+	std::cout << "\t\te.g \"horcrux\"" << std::endl << std::endl;
 
+	#ifdef _WIN32
 	std::cout << "=====EXAMPLES=====" << std::endl;
-	std::cout << "horcrux -a AES256 -m CBC create -n 2 \"C:\\voldemort.pdf\" \"C:\\horcrux\\\"" << std::endl;
-	std::cout << "horcrux -a AES256 -m CBC load -k \"<base64_key>\" \"C:\\horcrux\\harry.1\" \"C:\\horcrux\\nagini.2\" \"C:\\voldemort_is_back.pdf\"" << std::endl;
+	std::cout << "horcrux -a AES256 -m CBC create -p \"horcrux\" -n 2 \"C:\\voldemort.pdf\" \"C:\\horcrux\\\"" << std::endl;
+	std::cout << "horcrux -a AES256 -m CBC load -k \"<base64_key>\" \"C:\\horcrux\\horcrux_1\" \"C:\\horcrux\\horcrux_2\" \"C:\\voldemort_is_back.pdf\"" << std::endl;
+	std::cout << "or, using the wildcard expansion:" << std::endl;
+	std::cout << "horcrux -a AES256 -m CBC load -k \"<base64_key>\" \"C:\\horcrux\\horcrux_*\" \"C:\\voldemort_is_back.pdf\"" << std::endl << std::endl;
 	std::cout << "Please, remember that during the decryption process you need to specify the same parameters you set during the encryption process." << std::endl << std::endl;
+	#else
+	std::cout << "=====EXAMPLES=====" << std::endl;
+	std::cout << "horcrux -a AES256 -m CBC create -p \"horcrux\" -n 2 \"~/Desktop/voldemort.pdf\" \"~/Desktop/horcrux/\"" << std::endl;
+	std::cout << "horcrux -a AES256 -m CBC load -k \"<base64_key>\" \"~/Desktop/horcrux/horcrux_1\" \"~/Desktop/horcrux/horcrux_1\" \"~/Desktop/voldemort_is_back.pdf\"" << std::endl;
+	std::cout << "or, using the wildcard expansion:" << std::endl;
+	std::cout << "horcrux -a AES256 -m CBC load -k \"<base64_key>\" \"~/Desktop/horcrux/horcrux_*\" \"~/Desktop/voldemort_is_back.pdf\"" << std::endl << std::endl;
+	std::cout << "Please, remember that during the decryption process you need to specify the same parameters you set during the encryption process." << std::endl << std::endl;
+	#endif
 
 	abort();
 }
 
 const char* ARGUMENT_ENCRYPTION_ALGORITHM = "-a";
 const char* ARGUMENT_ENCRYPTION_MODE = "-m";
+const char* ARGUMENT_FILE_NAME_PREFIX = "-p";
+
 const char* ARGUMENT_ENCRYPT_PROCESS = "create";
 const char* ARGUMENT_HORCRUX_COUNT = "-n";
 
@@ -54,6 +69,7 @@ int main(int argc, char** argv)
 	if (argc < MINIMUM_CONSOLE_ARGUMENTS)
 		ShowHelpAndAbort();
 
+	bool fileNamePrefixcSpecified = false;
 	bool algorithmSpecified = false;
 	bool algorithmModeSpecified = false;
 	bool processTypeSelected = false; // encryption or decryption
@@ -62,6 +78,7 @@ int main(int argc, char** argv)
 
 	char* algorithmName = nullptr;
 	char* algorithmMode = nullptr;
+	char* fileNamePrefix = nullptr;
 	char* inputFile = nullptr;
 	char** inputFiles = nullptr; // can be used for encryption (1 file) and decryption (n files)
 	char* output = nullptr; // can be used for encryption (directory) and decryption (full path)
@@ -74,7 +91,7 @@ int main(int argc, char** argv)
 		std::string argument = argv[i];
 		char* w = argv[i];
 
-		if (!algorithmSpecified || !algorithmModeSpecified)
+		if (!algorithmSpecified || !algorithmModeSpecified || !fileNamePrefixcSpecified)
 		{
 			if (argument.compare(ARGUMENT_ENCRYPTION_ALGORITHM) == 0 && algorithmSpecified)
 				ShowHelpAndAbort();
@@ -98,6 +115,16 @@ int main(int argc, char** argv)
 				continue;
 			}
 
+			if (argument.compare(ARGUMENT_FILE_NAME_PREFIX) == 0 && fileNamePrefixcSpecified)
+				ShowHelpAndAbort();
+
+			if (argument.compare(ARGUMENT_FILE_NAME_PREFIX) == 0 && !fileNamePrefixcSpecified && i < argc - 6) // after "-p" we need at least 6 more arguments
+			{
+				fileNamePrefixcSpecified = true;
+				fileNamePrefix = argv[i + 1];
+				i++;
+				continue;
+			}
 		}
 
 
@@ -119,6 +146,10 @@ int main(int argc, char** argv)
 
 		if (argument.compare(ARGUMENTY_DECRYPT_PROCESS) == 0 && i < argc - 4) // after "load" we need at least 4 more arguments
 		{
+			// Argument not supported in decryption process
+			if (fileNamePrefixcSpecified)
+				ShowHelpAndAbort();
+
 			std::string nextArgument = argv[i + 1];
 			
 			if (nextArgument.compare(ARGUMENT_DECRYPTION_KEY) == 0)
@@ -150,26 +181,26 @@ int main(int argc, char** argv)
 	std::string _algorithmMode = algorithmMode ? std::string(algorithmMode) : "CBC"; 
 	std::string _algorithmName = algorithmName ? std::string(algorithmName) : "AES256";
 
-	Horcrux horcrux;
-	LocalDisk fileManager;
-	CIPHER_MODE mode;
+	Cubbit::Horcrux horcrux;
+	Cubbit::LocalDisk fileManager;
+	Cubbit::CIPHER_MODE mode;
 	
 	if (_algorithmMode == "ECB")
-		mode = CIPHER_MODE::ECB;
+		mode = Cubbit::CIPHER_MODE::ECB;
 	else
-		mode = CIPHER_MODE::CBC;
+		mode = Cubbit::CIPHER_MODE::CBC;
 
 	horcrux.FileManager = &fileManager;
 	
 	if (_algorithmName == "DES")
-		horcrux.Cipher = new DataEncryptionStandard(mode);
+		horcrux.Cipher = new Cubbit::DataEncryptionStandard(mode);
 	else
-		horcrux.Cipher = new AES256(mode);
+		horcrux.Cipher = new Cubbit::AES256(mode);
 
 	if (encrypt)
 	{
 		int chunks = std::stoi(std::string(horcruxCount));
-		horcrux.Encrypt(inputFile, chunks, output);
+		horcrux.Encrypt(inputFile, chunks, output, fileNamePrefix);
 	}
 	else if (decrypt)
 	{

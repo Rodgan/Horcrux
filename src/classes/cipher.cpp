@@ -48,7 +48,7 @@ namespace Cubbit
 
         if (dataRead != KeyLength + IvLength)
         {
-            std::string message = "Unable to set Key and IV. Expected a buffer of " + std::to_string(KeyLength + IvLength) + " bytes. Your key is " + std::to_string(dataRead) + " bytes.";
+            std::string message = "Unable to set Key and IV. Expected a buffer of " + std::to_string(KeyLength + IvLength) + " bytes. Your key + iv is " + std::to_string(dataRead) + " bytes. Did you select the right algorithm?";
             Horcrux::PrintErrorAndAbort(message.c_str());
         }
         
@@ -118,10 +118,10 @@ namespace Cubbit
             break;
         }
 
-        std::cout << std::endl << "Key Length: " << std::to_string(KeyLength);
+        std::cout << std::endl << "Key Length: " << std::to_string(KeyLength * 8) << " bit";
         std::cout << std::endl << "IV: " << (IgnoreIV ? "No" : "Yes");
         if (!IgnoreIV)
-            std::cout << std::endl << "IV Length: " << std::to_string(IvLength);
+            std::cout << std::endl << "IV Length: " << std::to_string(IvLength * 8) << " bit";
 
         std::cout << std::endl << "=======================" << std::endl;
     }
@@ -228,6 +228,11 @@ namespace Cubbit
                 if (CipherMode == CIPHER_MODE::ECB) return EVP_des_ecb();
             break;
 
+            // Remove the comments to implement AES128
+            // case CIPHER_ALGORITHM::AES_128:
+            //     if (CipherMode == CIPHER_MODE::CBC) return EVP_aes_128_cbc();
+            //     if (CipherMode == CIPHER_MODE::ECB) return EVP_aes_128_ecb();
+            // break;
         }
 
         // Using cout instead of cerr for testing only
@@ -243,4 +248,7 @@ namespace Cubbit
     {
 
     }
+    // Remove the comments to implement AES128
+    // AES128::AES128(CIPHER_MODE cipherMode) : ICipher(KEY_LENGTH, IV_LENGTH, BLOCK_SIZE, cipherMode, CIPHER_ALGORITHM::AES_128) { }
+
 }

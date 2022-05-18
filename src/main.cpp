@@ -194,6 +194,9 @@ int main(int argc, char** argv)
 	
 	if (_algorithmName == "DES")
 		horcrux.Cipher = new Cubbit::DataEncryptionStandard(mode);
+	// Remove the comments to implement AES128
+	// else if (_algorithmName == "AES128")
+	// 	horcrux.Cipher = new Cubbit::AES128(mode);
 	else
 		horcrux.Cipher = new Cubbit::AES256(mode);
 

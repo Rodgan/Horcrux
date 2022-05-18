@@ -11,6 +11,8 @@ namespace Cubbit
     };
     enum CIPHER_ALGORITHM
     {
+        // Remove the comment to implement AES128
+        // AES_128,
         AES_256,
         Data_Encryption_Standard // Just wanted to show that we can implement ciphers easily. Please, do not use DES.
         // you can add more elements but you need to implement them
@@ -92,4 +94,15 @@ namespace Cubbit
     public:
         DataEncryptionStandard(CIPHER_MODE cipherMode);
     };
+
+    // Remove the comments to implement AES128
+    // class AES128 : public ICipher
+    // {
+    //     // Length is stored in BYTES
+    //     static const int KEY_LENGTH = 128 / 8;
+    //     static const int IV_LENGTH = 128 / 8;
+    //     static const int BLOCK_SIZE = 128 / 8;
+    // public:
+    //     AES128(CIPHER_MODE cipherMode);
+    // };
 }

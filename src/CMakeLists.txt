@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10.0)
+cmake_minimum_required(VERSION 3.23.1)
 
 set (This horcrux)
 project(${This})
@@ -16,11 +16,13 @@ set (
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+# Libraries for Windows
 set(
     WinLibraries
     ${CMAKE_CURRENT_SOURCE_DIR}/lib/Windows/libcrypto.lib
 )
 
+# Libraries for Linux
 set(
     LinuxLibraries
     ${CMAKE_CURRENT_SOURCE_DIR}/lib/Linux/libcrypto.a

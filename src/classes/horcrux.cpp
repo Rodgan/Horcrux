@@ -14,7 +14,7 @@ namespace Cubbit
 	Horcrux::~Horcrux()
 	{
 		delete Cipher;
-		delete FileManager;
+		//delete FileManager;
 	}
 	void Horcrux::PrintErrorAndAbort(const char* error)
 	{

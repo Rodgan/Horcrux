@@ -182,7 +182,6 @@ int main(int argc, char** argv)
 	std::string _algorithmName = algorithmName ? std::string(algorithmName) : "AES256";
 
 	Cubbit::Horcrux horcrux;
-	Cubbit::LocalDisk fileManager;
 	Cubbit::CIPHER_MODE mode;
 	
 	if (_algorithmMode == "ECB")
@@ -190,7 +189,8 @@ int main(int argc, char** argv)
 	else
 		mode = Cubbit::CIPHER_MODE::CBC;
 
-	horcrux.FileManager = &fileManager;
+	// You can implement new types of FileManager
+	horcrux.FileManager = new Cubbit::LocalDisk();
 	
 	if (_algorithmName == "DES")
 		horcrux.Cipher = new Cubbit::DataEncryptionStandard(mode);

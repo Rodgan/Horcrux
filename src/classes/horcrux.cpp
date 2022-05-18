@@ -14,7 +14,7 @@ namespace Cubbit
 	Horcrux::~Horcrux()
 	{
 		delete Cipher;
-		//delete FileManager;
+		delete FileManager;
 	}
 	void Horcrux::PrintErrorAndAbort(const char* error)
 	{
@@ -44,8 +44,6 @@ namespace Cubbit
 		unsigned char* key = Cipher -> GetFullKeyAndIv(keyLength);
 
 		std::cout << Base64Encode(key, keyLength) << std::endl;
-
-		delete[] key;
 	}
 	void Horcrux::Decrypt(char** inputFiles, int& numOfFiles, char* outputFile, char* keyInBase64)
 	{

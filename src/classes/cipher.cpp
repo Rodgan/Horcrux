@@ -26,7 +26,7 @@ namespace Cubbit
     }
     ICipher::~ICipher()
     {
-        delete Key;
+        delete[] Key;
     }
     void ICipher::GenerateRandomKey()
     {

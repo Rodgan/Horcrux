@@ -53,6 +53,7 @@ namespace Cubbit
 
     void LocalDisk::EncryptFileAndSave(char* inputFile, int& chunks, char* fileNamePrefix, char* outputDirectory, ICipher& cipher)
     {
+         
         if (chunks < 1)
             Horcrux::PrintErrorAndAbort("The number of chunks to generate must be greater than 0");
 
@@ -77,14 +78,16 @@ namespace Cubbit
 
         int bufferLength = (int) length;
         unsigned char* ciphertext = new unsigned char[bufferLength];
-        int ciphertextLength = cipher.Encrypt(buffer, bufferLength, ciphertext);
-        SaveEncryptedFile(ciphertext, ciphertextLength, chunks, fileNamePrefix, fixedOutputDirectory);
 
+        int ciphertextLength = cipher.Encrypt(buffer, bufferLength, ciphertext);
+    
+        SaveEncryptedFile(ciphertext, ciphertextLength, chunks, fileNamePrefix, fixedOutputDirectory);
+ 
         if (freeSpace)
             delete fixedOutputDirectory;
-
-        // terminate called after throwing an instance of 'std::bad_alloc' what(): std::bad_alloc
-        //delete[] ciphertext;  // Why? Uhm... Need an explaination.
+      
+        delete[] buffer;
+        delete[] ciphertext; 
     }
     void LocalDisk::SaveEncryptedFile(unsigned char* ciphertext, int& ciphertextLength, int& chunks, char* fileNamePrefix, char* outputDirectory)
     {
@@ -126,6 +129,7 @@ namespace Cubbit
             delete[] chunkNumber;
         }
     }
+
     void LocalDisk::DecryptFilesAndSave(char** files, int numOfFiles, ICipher& cipher, char* outputFile)
     {
         FileSize* fileSize = new FileSize[numOfFiles];
